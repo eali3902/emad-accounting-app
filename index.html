@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام عماد علي المحاسبي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f4f9f4 0%, #e8f4e8 100%);
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c5f2d;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 90%;
+            margin: 15px auto;
+            padding: 15px;
+            background: linear-gradient(135deg, #2c5f2d, #1e3a28);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #1e3a28, #2c5f2d);
+        }
+        .icon {
+            font-size: 50px;
+            color: #2c5f2d;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">📊</div>
+        <h1>نظام عماد علي المحاسبي المتكامل</h1>
+        <p>تطبيق محاسبة متكامل يعمل على أندرويد</p>
+        
+        <button class="btn" onclick="showSection('customers')">👥 إدارة العملاء</button>
+        <button class="btn" onclick="showSection('products')">📦 إدارة المنتجات</button>
+        <button class="btn" onclick="showSection('sales')">💰 المبيعات</button>
+        <button class="btn" onclick="showSection('reports')">📊 التقارير</button>
+        
+        <div id="content" style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 10px; display: none;">
+            <h2 id="section-title"></h2>
+            <p id="section-content"></p>
+        </div>
+        
+        <div style="margin-top: 30px; color: #666; font-size: 14px;">
+            <p>📱 تم بناء هذا التطبيق باستخدام GitHub Actions</p>
+            <p>💾 البيانات محفوظة على جهازك بدون إنترنت</p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(section) {
+            const sections = {
+                customers: {title: '👥 إدارة العملاء', content: 'هنا يمكنك إضافة وعرض وتعديل بيانات العملاء'},
+                products: {title: '📦 إدارة المنتجات', content: 'هنا يمكنك إدارة المنتجات والمخزون'},
+                sales: {title: '💰 المبيعات', content: 'هنا يمكنك تسجيل المبيعات وعرض الفواتير'},
+                reports: {title: '📊 التقارير', content: 'هنا يمكنك عرض التقارير والكشوفات'}
+            };
+            
+            document.getElementById('section-title').textContent = sections[section].title;
+            document.getElementById('section-content').textContent = sections[section].content;
+            document.getElementById('content').style.display = 'block';
+            
+            // حفظ البيانات
+            localStorage.setItem('lastSection', section);
+            localStorage.setItem('visitDate', new Date().toLocaleString());
+        }
+        
+        // تحميل آخر قسم
+        const lastSection = localStorage.getItem('lastSection');
+        if (lastSection) {
+            showSection(lastSection);
+        }
+    </script>
+</body>
+</html>
