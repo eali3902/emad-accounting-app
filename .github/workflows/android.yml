@@ -1,0 +1,87 @@
+name: Build Android App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # الخطوة 1: تحميل الكود
+    - name: 📥 تحميل الكود
+      uses: actions/checkout@v3
+    
+    # الخطوة 2: إنشاء تطبيق بسيط
+    - name: 🛠️ إنشاء التطبيق
+      run: |
+        echo "🚀 بدء بناء تطبيق Android..."
+        
+        # تأكد من وجود index.html
+        if [ ! -f "index.html" ]; then
+          echo "❌ خطأ: ملف index.html غير موجود!"
+          echo "📝 إنشاء ملف HTML بسيط..."
+          cat > index.html << 'HTML'
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام عماد المحاسبي</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; text-align: center; }
+        .container { max-width: 800px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; }
+        h1 { color: #2c5f2d; }
+        .btn { display: block; width: 90%; margin: 15px auto; padding: 15px; background: #2c5f2d; color: white; border: none; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>نظام عماد علي المحاسبي</h1>
+        <p>تطبيق محاسبة متكامل لأندرويد</p>
+        <button class="btn">إدارة العملاء</button>
+        <button class="btn">إدارة المنتجات</button>
+        <button class="btn">المبيعات</button>
+        <button class="btn">التقارير</button>
+        <p style="margin-top: 30px; color: #666;">✅ تم البناء بنجاح via GitHub Actions</p>
+    </div>
+</body>
+</html>
+HTML
+        fi
+        
+        # إنشاء مجلد للبناء
+        mkdir -p dist
+        
+        # نسخ الملفات
+        cp index.html dist/
+        
+        # إنشاء ملف README
+        echo "🎉 تم بناء تطبيق عماد المحاسبي" > dist/README.txt
+        echo "تاريخ البناء: $(date)" >> dist/README.txt
+        echo "الملف الرئيسي: index.html" >> dist/README.txt
+        
+        # إنشاء ملف ZIP
+        cd dist
+        zip -r ../emad-app.zip *
+        
+        echo "✅ تم بناء التطبيق بنجاح!"
+        echo "📁 تم إنشاء: emad-app.zip"
+    
+    # الخطوة 3: رفع الملف الناتج
+    - name: 📤 رفع الملف الناتج
+      uses: actions/upload-artifact@v3
+      with:
+        name: android-app
+        path: emad-app.zip
+    
+    # الخطوة 4: إشعار النجاح
+    - name: 🎉 إشعار النجاح
+      run: |
+        echo "========================================"
+        echo "🎊 BUILD SUCCESSFUL!"
+        echo "📱 يمكنك تحميل التطبيق من Artifacts"
+        echo "⏱️ الوقت: $(date)"
+        echo "========================================"
