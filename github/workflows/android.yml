@@ -1,0 +1,31 @@
+name: بناء تطبيق أندرويد
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: إعداد بيئة البناء
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm default-jdk-headless
+    
+    - name: تثبيت Cordova
+      run: |
+        npm install -g cordova
+    
+    - name: إنشاء ملف APK
+      run: |
+        python3 build.py
+    
+    - name: رفع ملف APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: emad-accounting-app
+        path: emad-accounting.apk
