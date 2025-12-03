@@ -1,0 +1,9 @@
+{
+  "name": "emad-accounting-android",
+  "version": "1.0.0",
+  "description": "تطبيق نظام المحاسبة لأندرويد",
+  "main": "index.html",
+  "scripts": {
+    "build": "python3 build.py"
+  }
+}
