@@ -1,70 +1,0 @@
-name: بناء تطبيق عماد المحاسبي
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
-
-jobs:
-  build-android:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: 📥 تحميل الكود
-      uses: actions/checkout@v3
-      
-    - name: 🐍 إعداد بايثون
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: 📦 تثبيت Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
-        
-    - name: 🏗️ تثبيت المتطلبات
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y default-jdk
-        
-    - name: 🔧 بناء التطبيق
-      run: |
-        # أنشئ مجلد للتطبيق
-        mkdir -p android-app
-        
-        # أنشئ ملف config.xml لـ Cordova
-        cat > android-app/config.xml << 'XML'
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.emad.accounting" version="1.0.0">
-    <name>عماد المحاسبي</name>
-    <description>نظام محاسبة متكامل</description>
-    <author email="support@emad.com" href="https://emad.com">عماد علي</author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <preference name="android-minSdkVersion" value="19" />
-</widget>
-XML
-        
-        # نسخ index.html
-        cp index.html android-app/
-        
-        # إنشاء ملف APK بسيط (بديل)
-        cd android-app
-        zip -r ../emad-accounting-app.zip *
-        echo "✅ تم بناء التطبيق بنجاح!"
-        
-    - name: 📤 رفع الناتج
-      uses: actions/upload-artifact@v3
-      with:
-        name: emad-android-app
-        path: |
-          emad-accounting-app.zip
-          android-app/
-        
-    - name: 🎉 إشعار النجاح
-      run: |
-        echo "🎊 تم بناء التطبيق بنجاح!"
-        echo "📱 يمكنك تحميله من تبويب Artifacts"
